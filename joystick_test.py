@@ -2,8 +2,8 @@ import RPi.GPIO as GPIO
 import time
 
 # Define GPIO pin numbers (adjust based on your Raspberry Pi model and wiring)
-CH_THROTTLE_IN = 20  # Replace with your desired PWM input pin (BCM numbering)
-CH_STEERING_IN = 26  # Replace with your desired PWM input pin (BCM numbering)
+CH_THROTTLE_IN = 26  # Replace with your desired PWM input pin (BCM numbering)
+CH_STEERING_IN = 20  # Replace with your desired PWM input pin (BCM numbering)
 NUM_CHANNELS = 2
 PWM_DISCONNECT_THRESHOLD = 700  # Microsecond threshold for disconnection
 
@@ -38,12 +38,13 @@ def read_pwm_values():
     Reads PWM values from the specified channels and checks for disconnection.
 
     Returns:
-        list: A list containing the PWM values for each channel and a disconnec>
+        list: A list containing the PWM values for each channel and a disconnection flag.
     """
-    channel_values = [measure_pulse_width(CH_THROTTLE_IN), measure_pulse_width(>
-    disconnection = any(value < PWM_DISCONNECT_THRESHOLD for value in channel_v>
+    channel_values = [measure_pulse_width(CH_THROTTLE_IN), measure_pulse_width(CH_STEERING_IN)]
+    disconnection = any(value < PWM_DISCONNECT_THRESHOLD for value in channel_values)
     
     return channel_values, disconnection
+
 
 if __name__ == "__main__":
     try:
