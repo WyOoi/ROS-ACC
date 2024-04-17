@@ -17,35 +17,6 @@ from geometry_msgs.msg import TwistStamped
 
 TwistMsg = Twist
 
-moveBindings = {
-        'i':(1,0,0,0),
-        'o':(1,0,0,-1),
-        'j':(0,0,0,1),
-        'l':(0,0,0,-1),
-        'u':(1,0,0,1),
-        ',':(-1,0,0,0),
-        '.':(-1,0,0,1),
-        'm':(-1,0,0,-1),
-        'O':(1,-1,0,0),
-        'I':(1,0,0,0),
-        'J':(0,1,0,0),
-        'L':(0,-1,0,0),
-        'U':(1,1,0,0),
-        '<':(-1,0,0,0),
-        '>':(-1,-1,0,0),
-        'M':(-1,1,0,0),
-        't':(0,0,1,0),
-        'b':(0,0,-1,0),
-    }
-
-speedBindings={
-        'q':(1.1,1.1),
-        'z':(.9,.9),
-        'w':(1.1,1),
-        'x':(.9,1),
-        'e':(1,1.1),
-        'c':(1,.9),
-    }
 
 class PublishThread(threading.Thread):
     def __init__(self, rate):
@@ -79,67 +50,11 @@ class PublishThread(threading.Thread):
             i = i % 5
         if rospy.is_shutdown():
             raise Exception("Got shutdown request before subscribers connected")
-
-    def update(self, x, y, z, th, speed, turn):
-        self.condition.acquire()
-        self.x = x
-        self.y = y
-        self.z = z
-        self.th = th
-        self.speed = speed
-        self.turn = turn
-        # Notify publish thread that we have a new message.
-        self.condition.notify()
-        self.condition.release()
-
-    def stop(self):
-        self.done = True
-        self.update(0, 0, 0, 0, 0, 0)
-        self.join()
-
-    def run(self):
-        twist_msg = TwistMsg()
-
-        if stamped:
-            twist = twist_msg.twist
-            twist_msg.header.stamp = rospy.Time.now()
-            twist_msg.header.frame_id = twist_frame
-        else:
-            twist = twist_msg
-        while not self.done:
-            if stamped:
-                twist_msg.header.stamp = rospy.Time.now()
-            self.condition.acquire()
-            # Wait for a new message or timeout.
-            self.condition.wait(self.timeout)
-
-            # Copy state into twist message.
-            twist.linear.x = self.x * self.speed
-            twist.linear.y = self.y * self.speed
-            twist.linear.z = self.z * self.speed
-            twist.angular.x = 0
-            twist.angular.y = 0
-            twist.angular.z = self.th * self.turn
-
-            self.condition.release()
-
-            # Publish.
-            self.publisher.publish(twist_msg)
-
-        # Publish stop message when thread exits.
-        twist.linear.x = 0
-        twist.linear.y = 0
-        twist.linear.z = 0
-        twist.angular.x = 0
-        twist.angular.y = 0
-        twist.angular.z = 0
-        self.publisher.publish(twist_msg)
-
+                
 def vels(speed, turn):
     return "currently:\tspeed %s\tturn %s " % (speed,turn)
 
 if __name__=="__main__":
-    settings = saveTerminalSettings()
 
     rospy.init_node('teleop_twist_keyboard')
 
