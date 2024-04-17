@@ -6,6 +6,10 @@ import threading
 
 import roslib; roslib.load_manifest('teleop_js')
 import rospy
+import RPi.GPIO
+import time
+
+from std_msgs.msg import UInt16
 
 from geometry_msgs.msg import Twist
 from geometry_msgs.msg import TwistStamped
