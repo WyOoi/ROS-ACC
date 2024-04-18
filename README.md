@@ -1,4 +1,4 @@
-# DonkeyCar-ROS
+# DonkeyROS
 
 DonkeyCar on a Raspberry Pi with ROS and Ubiquity.
 
@@ -6,7 +6,8 @@ DonkeyCar on a Raspberry Pi with ROS and Ubiquity.
 
 On the Raspberry Pi, we use Ubiquity as the platform for images.
 
-Download Raspberry Pi images Ubiquity from https://ubiquity-pi-image.sfo2.digitaloceanspaces.com/2023-02-09-ubiquity-base-gdm3-focal-raspberry-pi.img.xz.
+Download Raspberry Pi images Ubiquity from: 
+https://ubiquity-pi-image.sfo2.digitaloceanspaces.com/2023-02-09-ubiquity-base-gdm3-focal-raspberry-pi.img.xz.
 
 ## Installation Software on DonkeyCar
 
